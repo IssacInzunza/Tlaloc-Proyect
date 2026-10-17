@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+dist/
+.cache/
+*.log
+*.tsbuildinfo
+.env
+test-results/
+playwright-report/
+samples/probe-*
+samples/*index*
+samples/s3-*.xml
+samples/*-verified.xml
+

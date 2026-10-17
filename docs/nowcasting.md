@@ -1,0 +1,11 @@
+# Short-term extrapolation
+
+Predictions use the latest footprint and accepted component velocity. For every wet square raster pixel, an analytic ray/box intersection determines whether translation will carry that pixel over the target within 60 minutes. The earliest crossing is used, rather than centroid distance or a circular storm approximation. This preserves approaching/away/lateral distinctions at the supplied grid resolution; boundary contact counts as a hit. A stationary footprint already covering the target has ETA zero.
+
+Before intersection, the observed footprint is advanced by observation age. Arrival times are relative to evaluation time. Missing target coverage, <60% valid circle, observations older than ten minutes, or a future latest observation suppress predictions. No returned interval is a calibrated probability: its heuristic half-width is 3 min + 25% of ETA + 0.5 times observation age in minutes. Bounds are clipped to [0,60]. ETA >30 min is low confidence and has no arrival interval. New/split/merge/unreliable-motion echoes remain informational with no arrival interval.
+
+Partial coverage, missing radar quality index, or limited radar quality caps high confidence at medium. Observation age >2 min also caps high at medium; >5 min forces low and suppresses the arrival interval. Imminent requires ETA <=10 min, high confidence, >=95% valid coverage and good actual radar quality. Preventive requires ETA <=30 min with medium/high confidence. These are qualitative attention levels, not official warnings.
+
+Speed is km/h (m/s ×3.6); direction is motion toward, clockwise from north, and omitted below 0.5 m/s. Footprints, distances, centroids and arrows describe the latest observation timestamp; arrival alone advances to evaluation time. Arrows span ten minutes of extrapolated translation.
+
+Rainfall can grow, decay, change direction, or develop locally. This algorithm extrapolates observed precipitation and cannot establish that a storm will persist, that a radar echo reaches the ground, or that an unobserved new storm will form. It does not replace official weather alerts. Product-mask-only quality is not certification of surface rainfall or radar visibility.

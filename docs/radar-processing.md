@@ -1,0 +1,23 @@
+# Radar processing and coverage
+
+Pipeline: **Fetch → Validate → Georeference → Filter → Segment → Track → Predict → Alert**.
+
+Fetch catalogs only for the selected MRMS domain, product and one or two UTC dates. Reuse bounded local files; enforce network timeouts, response size caps, gzip inflation bounds and GRIB framing. Rate objects must contain `PrecipRate`; embedded valid times must match the catalog key. Future observations are rejected. Optional reflectivity/RQI must be within 90 seconds of the rate observation.
+
+Decode with rasterio/GDAL, preserving the GRIB CRS and georeferencing. Reproject with nearest-neighbor sampling to an azimuthal equidistant WGS84 grid centered on the watch point, with 1000 m square cells and 20 km processing margin outside the watch radius. This supports distances and velocities in physical units. It cannot add resolution to the source and does not model storm evolution beyond the downloaded margin.
+
+Mask negative PrecipRate sentinel values and physically implausible (>500 mm/h) numeric rates to NaN. Reflectivity sentinels are unavailable independently of rate. No smoothing or aggressive opening removes weak echoes; segmentation uses the configured threshold (default 0.2 mm/h) and rejects isolated components smaller than 2 km². Those are engineering filters, not validated hydrometeor classification. Biological returns, virga, snow, hail and residual artifacts may remain.
+
+Coverage is computed within the actual meter-radius disk. Missing target data or <60% finite circle data suppresses prediction. A finite fraction below 95% is partial coverage. If RQI exists, a missing target RQI or value <0.2 suppresses prediction; a target below 0.8 or fewer than 80% of disk pixels with RQI≥0.8 makes quality limited and coverage partial. These thresholds are conservative, uncalibrated application choices. RQI accounts for aspects of beam geometry/terrain/melting-layer quality upstream; it does not guarantee correct precipitation at the ground.
+
+Without RQI, finite rate pixels can be analyzed with `product_mask_only` quality, but high confidence is capped at medium and imminent alerts are withheld. An upstream mask is not a full propagation/blockage model. We do not compute distance to an individual contributing radar or local beam elevation in version 1.0.
+
+Coverage states are mutually exclusive status labels. Staleness (>10 min) takes priority, preserving separate valid fraction and target flag. No precipitation is reported only when enough data are valid and no threshold echo appears in the watch disk; it is never inferred from missing pixels. The state means no detected precipitation above the chosen threshold, not guaranteed absence of rain or risk. Provider outage is reported separately.
+
+Each radar display field is independently reprojected into a geographic north-up raster for Leaflet `ImageOverlay`; a local projected raster is never stretched directly over latitude/longitude bounds. NaN pixels are gray; finite below-display-threshold pixels are transparent. Rate colors represent estimated mm/h (display threshold 0.1). The distinct reflectivity palette represents dBZ (display threshold 5). The preferred display is MRMS quality-controlled composite reflectivity, a column maximum; low-altitude reflectivity remains a separately obtained trend field and a named display fallback. No rate field is overwritten with a dBZ value.
+
+The API retains legacy rate image fields and adds `layers.rate` and optional `layers.reflectivity`, each with its actual source/product/UTC time, bounds, unit and native-grid finite fraction/maximum/echo count. Composite echoes are display-only and cannot create rate-based arrival alerts. In Mexicali, real QC-composite echoes were present while PrecipRate was zero and the low-altitude reflectivity field was missing; confusing those products caused the previous blank visualization. A finite zero rate still means zero in that NOAA estimate, not proof of clear sky or no echoes aloft.
+
+Component outlines and vectors use transformed geographic coordinates from the rate-analysis observation. A nearby auxiliary reflectivity time is displayed independently, with the ≤90 s product-association tolerance retained. The rendered region covers watch radius plus 20 km; a wider zoom is not a wider radar download.
+
+An ETA comes from a translated square-pixel footprint intersection. Tracking and prediction details are documented separately. Split/merge/shape changes suppress untrustworthy motion, and the first observation after an unsupported gap does not become a confirmed storm-formation alert.

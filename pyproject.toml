@@ -1,0 +1,9 @@
+[tool.pytest.ini_options]
+pythonpath = ["backend"]
+testpaths = ["backend/tests"]
+markers = ["integration: public network integration (opt in)"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+

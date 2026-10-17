@@ -1,0 +1,80 @@
+{
+  "location": {
+    "lat": 27.0,
+    "lon": -82.5,
+    "radius_km": 50,
+    "threshold": 0.2
+  },
+  "unit": "mm/h",
+  "synthetic": false,
+  "attribution": "NOAA MRMS, processed and reprojected by Tl\u00e1loc Project. No NOAA endorsement.",
+  "sha256": "9fcd050682b38e83abe38a666a66eb69e96b113a7354fc5090100d1f9322c43b",
+  "frames": [
+    {
+      "time": "2026-10-17T08:00:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-080000.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-080037.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-080000.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:02:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-080200.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-080236.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-080200.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:04:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-080400.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-080438.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-080400.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:06:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-080600.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-080640.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-080600.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:08:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-080800.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-080842.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-080800.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:10:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-081000.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-081041.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-081000.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:12:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-081200.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-081241.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-081200.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:14:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-081400.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-081436.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-081400.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:16:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-081600.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-081642.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-081600.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:18:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-081800.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-081836.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-081800.grib2.gz"
+    },
+    {
+      "time": "2026-10-17T08:20:00+00:00",
+      "source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/PrecipRate_00.00/20261017/MRMS_PrecipRate_00.00_20261017-082000.grib2.gz",
+      "reflectivity_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/ReflectivityAtLowestAltitude_00.50/20261017/MRMS_ReflectivityAtLowestAltitude_00.50_20261017-081836.grib2.gz",
+      "quality_source": "https://noaa-mrms-pds.s3.amazonaws.com/CONUS/RadarQualityIndex_00.00/20261017/MRMS_RadarQualityIndex_00.00_20261017-082000.grib2.gz"
+    }
+  ]
+}
