@@ -70,12 +70,23 @@ def predict(frames: list[Frame], location: Location, now: datetime | None = None
                 level = "imminent"
         direction = speed = None
         vector_end = None
+        arrival_status = "motion_uncertain"
         if region.vx is not None:
             speed = round(float(np.hypot(region.vx, region.vy))*3.6, 1)
             if speed >= 1.8:
                 direction = round(float(np.degrees(np.arctan2(region.vx, region.vy))) % 360, 1)
-            end_lat, end_lon = frame.to_geo(region.x+region.vx*600, region.y+region.vy*600)
-            vector_end = [end_lat, end_lon]
+                end_lat, end_lon = frame.to_geo(region.x+region.vx*600, region.y+region.vy*600)
+                vector_end = [end_lat, end_lon]
+            if interval is not None:
+                arrival_status = "estimated"
+            elif confidence == "low":
+                arrival_status = "low_confidence"
+            elif speed < 1.8:
+                arrival_status = "stationary"
+            elif eta is None:
+                arrival_status = "no_intersection"
+        if eta is not None and eta > 30 and interval is None:
+            arrival_status = "beyond_horizon"
         contours, _ = cv2.findContours(region.mask.astype("uint8"), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         polygon = []
         if contours:
@@ -88,6 +99,7 @@ def predict(frames: list[Frame], location: Location, now: datetime | None = None
             "moderate" if region.peak >= 2 else "light", peak_rate=round(region.peak, 2),
             area_km2=region.area, distance_km=round(distance, 1), lat=lat, lon=lon,
             direction_deg=direction, speed_kmh=speed, arrival_minutes=interval,
+            arrival_status=arrival_status,
             confidence=confidence, event=region.event, observation_time=frame.time,
             data_quality=state.quality, vector_end=vector_end, polygon=polygon,
         ))

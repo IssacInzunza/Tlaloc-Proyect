@@ -17,3 +17,11 @@
 @media(max-width:520px){.layer-selector select{max-width:165px;font-size:10px}.map-status{max-width:90px}.observation-source{font-size:9px}}
 
 .layer-data{font-size:10px;margin:0;padding:8px 18px 0;color:#c4ded7;background:#101b23}
+
+.freshness{display:flex;flex-wrap:wrap;gap:8px 20px;padding:10px 18px;font-size:10px;color:#b9d6cf;background:#101b23;border-top:1px solid #26323c}
+.arrival.arrival-reason{font-size:19px;line-height:1.35;overflow-wrap:anywhere}
+.monitor-panel{padding:15px 18px;margin-bottom:20px;background:#131f28;border:1px solid var(--border);border-radius:8px;font-size:12px;min-width:0}
+.monitor-panel p,.monitor-panel small{color:#a8c4c1;font-size:11px;line-height:1.5}
+.monitor-actions,.monitor-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:10px}
+.monitor-row{padding-top:10px;border-top:1px solid var(--border)}
+.monitor-row label{display:flex;gap:6px;align-items:center}.monitor-panel button{font-size:11px}.monitor-actions input{max-width:100%;min-width:0}.monitor-row small{flex:1;min-width:160px}

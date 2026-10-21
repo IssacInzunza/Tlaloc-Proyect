@@ -87,7 +87,7 @@
   "method": "CÓMO FUNCIONA",
   "methodHeading": "Primero observaciones. Siempre incertidumbre.",
   "methodNote": "Se siguen regiones entre observaciones de radar. El movimiento y la geometría estiman la llegada; los datos ausentes o antiguos detienen la predicción.",
-  "refreshNote": "Actualización en vivo cada 60 segundos",
+  "refreshNote": "Consulta automática cada 60 s después de completar la anterior; las observaciones dependen del radar.",
   "metrics": "Validación histórica",
   "export": "Exportar JSON",
   "metricsNote": "Métricas experimentales de este episodio. Los valores no medibles permanecen desconocidos. Las ejecuciones pueden diferir en ubicación, duración y umbral.",
@@ -184,7 +184,7 @@
   "push": {
     "title": "Notificaciones de lluvia fuera de esta página",
     "description": "Recibe avisos de inicio de lluvia observada y de llegadas que cumplan los criterios, incluso con esta pestaña cerrada. Esta computadora y el servidor de Tláloc deben seguir encendidos. El navegador y el sistema deben permitir notificaciones en segundo plano. Pausar el mapa no detiene estos avisos.",
-    "privacy": "Al activar se guardan el punto vigilado y la suscripción en esta computadora. Los mensajes cifrados pasan por el servicio push del navegador; no incluyen dirección ni coordenadas exactas. Desactiva aquí para detener la vigilancia.",
+    "privacy": "La suscripción se guarda en esta computadora. Los mensajes cifrados pasan por el servicio push del navegador sin dirección ni coordenadas exactas. Apagar los avisos conserva las ubicaciones guardadas para monitoreo.",
     "enabled": "Vigilancia en segundo plano activada.",
     "disabled": "Notificaciones en segundo plano desactivadas.",
     "inactive": "El servidor detuvo esta suscripción. Actívala de nuevo para restaurarla.",
@@ -206,5 +206,37 @@
     "enable": "Activar notificaciones de lluvia",
     "disable": "Desactivar notificaciones de lluvia",
     "test": "Enviar notificación de prueba"
+  },
+  "offline": "Sin conexión",
+  "updateFailed": "Falló la actualización",
+  "checkDelayed": "Consulta atrasada",
+  "waitingObservation": "Esperando nueva observación",
+  "lastQuery": "Última consulta completada",
+  "radarObservation": "Imagen del radar",
+  "arrivalExplanation": "Estado de estimación de llegada",
+  "arrivalReasons": {
+    "motion_uncertain": "Movimiento incierto",
+    "stationary": "Sin movimiento detectable",
+    "no_intersection": "La trayectoria no alcanza tu ubicación en 60 min",
+    "low_confidence": "Confianza insuficiente para estimar llegada",
+    "beyond_horizon": "Llegada fuera del horizonte de 30 min",
+    "estimated": "Llegada estimada"
+  },
+  "monitor": {
+    "title": "Ubicaciones monitoreadas",
+    "description": "Guarda una ubicación para revisarla cada 2 minutos aunque cierres la página y apagues los avisos. El servidor y esta computadora deben permanecer encendidos. Los avisos se configuran por separado.",
+    "name": "Nombre de la ubicación",
+    "save": "Guardar y monitorear ubicación actual",
+    "enabled": "Monitorear",
+    "checked": "Última revisión",
+    "pending": "Pendiente de primera revisión",
+    "checkError": "Revisión sin datos recientes o fallida",
+    "remove": "Eliminar",
+    "loadError": "No se pudieron consultar las ubicaciones guardadas. Revisa la conexión con el servidor.",
+    "originError": "El servidor rechazó el origen de esta página. Abre la aplicación desde la misma dirección del servidor en localhost o en la red local.",
+    "limitError": "Ya hay 8 ubicaciones guardadas. Elimina una para añadir otra.",
+    "locationError": "La ubicación o el nombre no son válidos. Revisa las coordenadas y los ajustes.",
+    "saveError": "El servidor no pudo guardar el cambio. Inténtalo de nuevo; si persiste, revisa los permisos de almacenamiento del servidor.",
+    "connectionError": "No se pudo conectar con el servidor para guardar el cambio. Inténtalo de nuevo."
   }
 }

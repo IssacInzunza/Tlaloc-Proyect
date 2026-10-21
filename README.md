@@ -17,6 +17,16 @@ Tláloc runs on your computer. Select a point, watch a fixed 10–100 km geograp
 - Chronological historical replay, a small real NOAA episode bundled for offline replay, diagnostic metrics, saved run comparison and JSON export.
 - FastAPI OpenAPI documentation, deterministic tests and an opt-in actual NOAA integration test.
 
+## Live updates and saved monitoring
+
+The map checks again 60 seconds after each completed analysis. Slow requests finish without overlapping; a four-minute timeout allows recovery from stalled requests. Returning to the tab or reconnecting triggers a check. Last completed check and radar image time are displayed separately, and failures preserve the last image with an explicit status. New radar publications depend on NOAA; repeated checks may legitimately return the same observation.
+
+Use **Monitored locations → Save and monitor current location** to keep up to eight named locations on this computer. The server checks enabled locations every two minutes (plus analysis time), including with all pages closed and push notifications disabled. Toggle **Monitor** or remove a location to stop that saved monitor. Notifications remain a separate opt-in watch for their configured location; stopping one does not stop the other. The computer and server must remain running. Historical replay never changes saved monitors. Saving works through the same server origin on localhost or a private LAN IP (for example `http://192.168.100.12:8001`); cross-origin requests are rejected. This does not change the default loopback binding.
+
+Tracking checkpoints are stored atomically in `.cache/tracking`, bounded to eight locations. After a restart the tracker resumes identities, age and velocity only when the checkpoint is at most ten minutes old and the radar grids/intervals remain compatible; otherwise it rebuilds from available observations. Cached checkpoints never substitute for fresh radar coverage checks.
+
+Arrival cards distinguish uncertain motion, no detectable movement, insufficient confidence, a trajectory with no intersection in 60 minutes, and arrival beyond the 30-minute confidence horizon. Motion arrows require a defined bearing and speed of at least 1.8 km/h. Arrival remains an experimental extrapolation.
+
 ## Requirements
 
 Python **3.12 or newer**, Node.js **20.19+**, npm, and an ordinary CPU. No API key, account, GPU, paid weather service, or public infrastructure is required. Use 64-bit Python with binary wheels for NumPy, OpenCV, rasterio/GDAL and pyproj. Initial dependency installation needs internet access. Windows 11 was exercised here; the Linux commands below are provided but have not been executed on Linux in this session.

@@ -45,6 +45,21 @@ def test_latest_alias_is_refreshed(tmp_path, monkeypatch):
     assert len(calls) == 2
 
 
+def test_reading_latest_alias_does_not_extend_its_freshness(tmp_path, monkeypatch):
+    provider = MRMSProvider(tmp_path)
+    calls = []
+    monkeypatch.setattr(provider, "get", lambda *_args: calls.append(1) or gzip.compress(b"GRIBtest7777"))
+    url = "https://example.invalid/MRMS.latest.grib2.gz"
+    path = provider.download(url)
+    downloaded = path.stat().st_mtime
+    monkeypatch.setattr("app.providers.time.time", lambda: downloaded + 40)
+    provider.download(url)
+    assert path.stat().st_mtime == downloaded
+    monkeypatch.setattr("app.providers.time.time", lambda: downloaded + 61)
+    provider.download(url)
+    assert len(calls) == 2
+
+
 @pytest.mark.integration
 @pytest.mark.skipif(os.environ.get("TLALOC_NETWORK_TESTS") != "1", reason="Opt-in real NOAA download")
 def test_real_noaa_grib(tmp_path):

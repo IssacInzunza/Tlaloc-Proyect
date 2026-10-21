@@ -6,7 +6,7 @@ export interface Prediction {
   id: string; level: string; intensity: string; peak_rate: number; area_km2: number;
   distance_km: number; lat: number; lon: number; direction_deg: number | null;
   speed_kmh: number | null; arrival_minutes: [number, number] | null; confidence: string;
-  event: string; observation_time: string; data_quality: string;
+  arrival_status?: string; event: string; observation_time: string; data_quality: string;
   vector_end: [number, number] | null; polygon: [number, number][];
 }
 export interface Analysis { location: Location; coverage: Coverage; frames: RadarFrame[]; predictions: Prediction[]; observation_time: string | null; processing_seconds: number }
@@ -17,11 +17,14 @@ export interface Sample { location: Location; frames: {time: string}[] }
 export interface Place { name: string; lat: number; lon: number; kind?: string; provider?: string }
 
 export function query(location: Location) { return new URLSearchParams(Object.entries(location).map(([key, value]) => [key, String(value)])).toString(); }
+export class ApiRequestError extends Error {
+  constructor(public status: number, detail: string) { super(detail); }
+}
 export async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, options);
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
-    throw new Error(typeof body.detail === 'string' ? body.detail : 'request_failed');
+    throw new ApiRequestError(response.status, typeof body.detail === 'string' ? body.detail : 'request_failed');
   }
   return response.json() as Promise<T>;
 }

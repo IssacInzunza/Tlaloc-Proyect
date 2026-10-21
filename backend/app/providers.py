@@ -112,7 +112,9 @@ class MRMSProvider:
         if path.exists() and ".latest." in url and time.time()-path.stat().st_mtime >= 60:
             path.unlink()
         if path.exists():
-            path.touch()
+            # A read must not extend the freshness of a mutable latest URL.
+            if ".latest." not in url:
+                path.touch()
             return path
         payload = self.get(url, 16_000_000)
         try:

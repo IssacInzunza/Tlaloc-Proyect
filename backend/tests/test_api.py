@@ -3,6 +3,7 @@ from datetime import UTC, datetime, timedelta
 import numpy as np
 import pytest
 from app import main
+from app.checkpoints import TrackingStore
 from app.history import AlertHistory
 from app.models import Location, Prediction
 from app.providers import ProviderError
@@ -13,6 +14,7 @@ from fastapi.testclient import TestClient
 @pytest.fixture
 def client(monkeypatch, tmp_path):
     monkeypatch.setattr(main, "history", AlertHistory(tmp_path/"history.sqlite3"))
+    monkeypatch.setattr(main, "tracking_store", TrackingStore(tmp_path / "tracking"))
     main.result_cache.clear()
     main.tracking_cache.clear()
     location = Location(lat=32, lon=-115)

@@ -53,6 +53,8 @@ class Prediction(BaseModel):
     direction_deg: float | None = None
     speed_kmh: float | None = None
     arrival_minutes: list[float] | None = None
+    arrival_status: Literal["estimated", "motion_uncertain", "stationary", "no_intersection",
+                            "low_confidence", "beyond_horizon"] = "motion_uncertain"
     confidence: Literal["low", "medium", "high"] = "low"
     event: str = "observed"
     observation_time: datetime

@@ -189,3 +189,45 @@ def test_long_horizon_arrival_has_no_precise_interval():
     result = predict([latest], LOCATION, latest.time, tracked_regions=[region])[0]
     assert result.arrival_minutes is None
     assert result.confidence == "low" and result.level == "informational"
+
+
+def test_stationary_motion_has_no_arrow_and_explains_arrival():
+    frames = [frame(i*120) for i in range(3)]
+    result = predict(frames, LOCATION, frames[-1].time)[0]
+    assert result.speed_kmh == 0
+    assert result.direction_deg is None and result.vector_end is None
+    assert result.arrival_status == "stationary"
+
+
+def test_arrival_reason_distinguishes_uncertain_lateral_and_low_confidence():
+    unknown = frame()
+    assert predict([unknown], LOCATION, unknown.time)[0].arrival_status == "motion_uncertain"
+    frames = [frame(i*120, ((38, 43, 28+2*i, 33+2*i),)) for i in range(3)]
+    assert predict(frames, LOCATION, frames[-1].time)[0].arrival_status == "no_intersection"
+    frames = approaching()
+    assert predict(frames, LOCATION, frames[-1].time)[0].arrival_status == "estimated"
+    assert predict(frames, LOCATION, frames[-1].time+timedelta(minutes=6))[0].arrival_status == "low_confidence"
+
+
+def test_tracking_checkpoint_survives_restart_and_rejects_stale_state(tmp_path):
+    from backend.app.checkpoints import TrackingStore
+    now = datetime.now(UTC)
+    frames = approaching()
+    for i, item in enumerate(frames):
+        item.time = now-timedelta(seconds=(2-i)*120)
+    regions = track(frames)
+    store = TrackingStore(tmp_path)
+    store.save("scope", frames[-1], regions)
+    previous, restored = TrackingStore(tmp_path).load("scope")
+    assert restored[0].id == regions[0].id
+    assert restored[0].age == 3 and restored[0].vx == regions[0].vx
+    next_frame = frame(0, ((48, 53, 34, 39),))
+    next_frame.time = now+timedelta(seconds=120)
+    continued = associate(previous, next_frame, restored, segment(next_frame))[0]
+    assert continued.id == regions[0].id and continued.age == 4
+    assert continued.confidence == "high"
+    previous.time = now-timedelta(minutes=11)
+    store.save("scope", previous, restored)
+    assert store.load("scope") is None
+    store.path("scope").write_bytes(b"damaged checkpoint")
+    assert store.load("scope") is None

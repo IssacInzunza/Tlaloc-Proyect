@@ -22,6 +22,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .models import Location
+from .origin import require_local_origin
 
 
 def _b64(data: bytes) -> str:
@@ -154,11 +155,7 @@ class NotificationService:
 
     @staticmethod
     def _same_origin(request: Request):
-        host = request.url.hostname
-        origin = request.headers.get("origin")
-        expected = f"{request.url.scheme}://{request.url.netloc}"
-        if host not in ("localhost", "127.0.0.1", "::1") or origin != expected:
-            raise HTTPException(403, "notification_same_origin_required")
+        require_local_origin(request, "notification_same_origin_required")
 
     def _record(self, token):
         if not re.fullmatch(r"[A-Za-z0-9_-]{43}", token) or token not in self.records:

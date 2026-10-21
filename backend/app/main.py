@@ -15,9 +15,11 @@ from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from .checkpoints import TrackingStore
 from .geocoding import Geocoder, SearchError
 from .history import AlertHistory
 from .models import Coverage, Location, ReplayRequest
+from .monitoring import MonitorService
 from .notifications import NotificationService
 from .nowcasting import predict
 from .providers import MRMSProvider, ProviderError
@@ -34,10 +36,12 @@ history = AlertHistory(CACHE / "history.sqlite3")
 @asynccontextmanager
 async def lifespan(_app):
     notification_service.start()
+    monitor_service.start()
     try:
         yield
     finally:
         notification_service.stop()
+        monitor_service.stop()
 
 
 app = FastAPI(title="Tlaloc Project", version="1.0.0",
@@ -47,6 +51,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173", "http
 lock = threading.RLock()
 result_cache = {}
 tracking_cache = {}
+tracking_store = TrackingStore(CACHE / "tracking")
 geocoder = Geocoder()
 
 
@@ -87,8 +92,8 @@ def analyze(location):
             state = Coverage(status="provider_unavailable", reason="provider_error")
         predictions = []
         if frames:
-            previous = tracking_cache.get(key)
-            if previous and any(frame.time == previous[0].time for frame in frames):
+            previous = tracking_cache.get(key) or tracking_store.load(key)
+            if previous and frames[-1].time >= previous[0].time:
                 previous_frame, tracked = previous
                 for frame in frames:
                     if frame.time > previous_frame.time:
@@ -99,6 +104,8 @@ def analyze(location):
             if len(tracking_cache) >= 8 and key not in tracking_cache:
                 tracking_cache.pop(next(iter(tracking_cache)))
             tracking_cache[key] = (frames[-1], tracked)
+            if not previous or frames[-1].time > previous[0].time:
+                tracking_store.save(key, frames[-1], tracked)
             predictions = predict(frames, location, tracked_regions=tracked)
         serialized = [p.model_dump(mode="json") for p in predictions]
         observation = frames[-1].time.isoformat() if frames else datetime.now(UTC).isoformat()
@@ -121,6 +128,16 @@ def analyze(location):
 
 notification_service = NotificationService(CACHE, analyze)
 app.include_router(notification_service.router)
+monitor_service = MonitorService(CACHE / "monitoring", analyze)
+app.include_router(monitor_service.router)
+
+
+@app.middleware("http")
+async def fresh_api(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 @app.get("/api/health")

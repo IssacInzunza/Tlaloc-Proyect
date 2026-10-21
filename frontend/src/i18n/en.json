@@ -87,7 +87,7 @@
   "method": "HOW IT WORKS",
   "methodHeading": "Observations first. Uncertainty always.",
   "methodNote": "Radar regions are tracked across observations. Motion and footprint geometry inform arrival estimates; unavailable or stale observations stop prediction.",
-  "refreshNote": "Live observations refresh every 60 seconds",
+  "refreshNote": "Automatic check 60 s after the previous one completes; new observations depend on the radar.",
   "metrics": "Replay validation",
   "export": "Export JSON",
   "metricsNote": "Metrics are experimental and describe this episode only. Unmeasurable values remain unknown. Runs can differ in location, duration, and thresholds.",
@@ -184,7 +184,7 @@
   "push": {
     "title": "Rain notifications outside this page",
     "description": "Receive observed rain onset and qualifying arrival alerts, even with this tab closed. This computer and the Tláloc server must stay on. Your browser and operating system must allow background notifications. Pausing the map does not stop these notifications.",
-    "privacy": "Enabling stores this watch and the push subscription on this computer. Encrypted messages pass through your browser's push service; they contain no exact address or coordinates. Disable here to stop monitoring.",
+    "privacy": "The subscription is stored on this computer. Encrypted messages pass through the browser push service without exact addresses or coordinates. Disabling notifications preserves saved monitored locations.",
     "enabled": "Background watch enabled.",
     "disabled": "Background notifications disabled.",
     "inactive": "The server has stopped this subscription. Enable again to restore it.",
@@ -206,5 +206,37 @@
     "enable": "Enable rain notifications",
     "disable": "Disable rain notifications",
     "test": "Send test notification"
+  },
+  "offline": "Offline",
+  "updateFailed": "Update failed",
+  "checkDelayed": "Check overdue",
+  "waitingObservation": "Waiting for a new observation",
+  "lastQuery": "Last completed check",
+  "radarObservation": "Radar image",
+  "arrivalExplanation": "Arrival estimate status",
+  "arrivalReasons": {
+    "motion_uncertain": "Motion uncertain",
+    "stationary": "No detectable movement",
+    "no_intersection": "Trajectory does not reach your location within 60 min",
+    "low_confidence": "Insufficient confidence to estimate arrival",
+    "beyond_horizon": "Arrival beyond the 30 min forecast horizon",
+    "estimated": "Estimated arrival"
+  },
+  "monitor": {
+    "title": "Monitored locations",
+    "description": "Save a location to check it every 2 minutes with the page closed and notifications off. This computer and the server must stay on. Notifications are configured separately.",
+    "name": "Location name",
+    "save": "Save and monitor current location",
+    "enabled": "Monitor",
+    "checked": "Last check",
+    "pending": "Waiting for first check",
+    "checkError": "Check failed or observations unavailable or stale",
+    "remove": "Remove",
+    "loadError": "Could not load saved locations. Check the server connection.",
+    "originError": "The server rejected this page origin. Open the app from the same server address on localhost or your local network.",
+    "limitError": "Eight locations are already saved. Remove one before adding another.",
+    "locationError": "The location or name is invalid. Check coordinates and settings.",
+    "saveError": "The server could not save the change. Retry; if it persists, check server storage permissions.",
+    "connectionError": "Could not connect to the server to save the change. Try again."
   }
 }
